@@ -3,547 +3,174 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>はめあい公差 計算ツール｜JIS B 0401・ISO 286・無料</title>
-<meta name="description" content="基準寸法とはめあい記号（H7/g6 など）を選ぶだけで、穴・軸の許容寸法、すきま・しめしろ、はめあい種別（すきまばめ／中間ばめ／しまりばめ）を自動計算。JIS B 0401・ISO 286準拠、穴基準・軸基準の両対応。実務での「はめあいの選び方」解説と早見表付き。登録不要・無料・公差帯ダイアグラム表示。">
+<title>機械設計 計算ツール集｜はめあい公差・ボルト締結ほか（無料）</title>
+<meta name="description" content="機械設計の現場で使える、規格準拠の計算ツール集。はめあい公差（JIS B 0401 / ISO 286）の計算をはじめ、ボルト締結・硬度換算などを順次公開。登録不要・ブラウザ完結・無料。">
 <meta name="robots" content="index,follow">
-<meta property="og:title" content="はめあい公差 計算ツール｜JIS B 0401・ISO 286・無料">
-<meta property="og:description" content="H7/g6 などを選ぶだけ。すきま/しめしろ・はめあい種別を公差帯ダイアグラム付きで即計算。穴基準・軸基準の両対応。">
+<meta property="og:title" content="機械設計 計算ツール集｜はめあい公差・ボルト締結ほか">
+<meta property="og:description" content="現場で使える、規格準拠の機械設計ツール集。登録不要・無料。">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://ohyo04.github.io/fit/">
-<link rel="canonical" href="https://ohyo04.github.io/fit/">
+<meta property="og:url" content="https://ohyo04.github.io/">
+<link rel="canonical" href="https://ohyo04.github.io/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --paper:#f1ede3;
-    --paper-2:#e9e4d6;
-    --ink:#1b1a16;
-    --ink-soft:#52503f;
-    --line:#c9c2af;
-    --line-strong:#9b937c;
-    --accent:#1f3d5c;
-    --clear:#2b6f8e;  --clear-bg:#dcebf0;
-    --trans:#b07908;  --trans-bg:#f2e7c9;
-    --inter:#a8362b;  --inter-bg:#f0d9d5;
-    --neg:#a8362b; --pos:#1f3d5c;
-    --grid:rgba(120,112,90,0.10);
-    --grid-strong:rgba(120,112,90,0.18);
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-  body{
-    font-family:"IBM Plex Sans JP",system-ui,sans-serif;
-    color:var(--ink);
-    background:
-      linear-gradient(var(--grid) 1px,transparent 1px),
-      linear-gradient(90deg,var(--grid) 1px,transparent 1px),
-      var(--paper);
-    background-size:24px 24px,24px 24px,auto;
-    line-height:1.65;
-    padding:0 18px 80px;
-  }
-  .wrap{max-width:960px;margin:0 auto}
-
-  /* ---- header ---- */
-  header{padding:48px 0 24px;border-bottom:2px solid var(--ink);position:relative}
-  .eyebrow{
-    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.34em;
-    text-transform:uppercase;color:var(--ink-soft);display:flex;gap:14px;align-items:center;
-  }
-  .eyebrow::before{content:"";width:34px;height:2px;background:var(--accent);display:inline-block}
-  h1{
-    font-family:"Archivo","IBM Plex Sans JP",sans-serif;font-weight:800;
-    font-size:clamp(30px,6vw,46px);line-height:1.05;letter-spacing:-.01em;margin:14px 0 8px;
-  }
-  .lead{color:var(--ink-soft);font-size:15px;max-width:60ch}
-  .corner{position:absolute;top:18px;right:0;font-family:"IBM Plex Mono",monospace;font-size:10px;
-    letter-spacing:.2em;color:var(--line-strong);text-align:right;line-height:1.5}
-
-  /* ---- panel / card ---- */
-  .grid-main{display:grid;grid-template-columns:1fr;gap:22px;margin-top:30px}
-  @media(min-width:760px){.grid-main{grid-template-columns:0.92fr 1.08fr}}
-  .card{
-    background:var(--paper-2);border:1.5px solid var(--line-strong);
-    box-shadow:4px 4px 0 rgba(27,26,22,.10);
-  }
-  .card-h{
-    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;
-    color:var(--ink-soft);padding:11px 16px;border-bottom:1.5px solid var(--line-strong);
-    display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.25)
-  }
-  .card-b{padding:18px 16px}
-
-  label.fld{display:block;margin-bottom:15px}
-  label.fld:last-child{margin-bottom:0}
-  .fld .lab{font-size:12px;font-weight:600;color:var(--ink-soft);letter-spacing:.04em;margin-bottom:6px;display:block}
-  input[type=number],select{
-    width:100%;font-family:"IBM Plex Mono",monospace;font-size:16px;color:var(--ink);
-    background:var(--paper);border:1.5px solid var(--line-strong);padding:10px 12px;border-radius:0;
-    appearance:none;-webkit-appearance:none;
-  }
-  input[type=number]:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
-  select{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%2352503f' stroke-width='1.6'/></svg>");
-    background-repeat:no-repeat;background-position:right 12px center;padding-right:34px;cursor:pointer}
-  .pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  .dimrow{display:grid;grid-template-columns:1fr auto;gap:0}
-  .dimrow input{border-right:none}
-  .unit{display:flex;align-items:center;padding:0 16px;font-family:"IBM Plex Mono",monospace;
-    background:var(--ink);color:var(--paper);font-size:14px;border:1.5px solid var(--ink)}
-  .hint{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--line-strong);margin-top:6px;letter-spacing:.02em}
-
-  /* ---- result ---- */
-  .badge{
-    display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:17px;
-    padding:8px 16px;border:1.5px solid;letter-spacing:.02em;
-  }
-  .badge .en{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;letter-spacing:.16em;opacity:.8;text-transform:uppercase}
-  .badge.clearance{color:var(--clear);border-color:var(--clear);background:var(--clear-bg)}
-  .badge.transition{color:var(--trans);border-color:var(--trans);background:var(--trans-bg)}
-  .badge.interference{color:var(--inter);border-color:var(--inter);background:var(--inter-bg)}
-
-  table.dim{width:100%;border-collapse:collapse;margin-top:16px;font-family:"IBM Plex Mono",monospace}
-  table.dim th,table.dim td{padding:8px 10px;text-align:right;font-size:14px;border-bottom:1px solid var(--line)}
-  table.dim th{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;text-align:right;border-bottom:1.5px solid var(--line-strong)}
-  table.dim td.lab{text-align:left;font-family:"IBM Plex Sans JP";font-weight:600;font-size:13px}
-  tr.part-hole td.lab::before{content:"";display:inline-block;width:9px;height:9px;background:var(--accent);margin-right:8px;vertical-align:middle}
-  tr.part-shaft td.lab::before{content:"";display:inline-block;width:9px;height:9px;border:2px solid var(--ink-soft);margin-right:8px;vertical-align:middle}
-  .neg{color:var(--neg)} .pos{color:var(--pos)}
-
-  .fitnums{margin-top:16px;border-top:1.5px dashed var(--line-strong);padding-top:14px}
-  .fitnums .row{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;font-family:"IBM Plex Mono",monospace}
-  .fitnums .k{font-family:"IBM Plex Sans JP";font-size:13px;font-weight:600;color:var(--ink-soft)}
-  .fitnums .v{font-size:18px;font-weight:600}
-  .fitnums .v small{font-size:12px;color:var(--ink-soft);font-weight:400;margin-left:7px}
-
-  .diagram-wrap{padding:8px 10px 14px}
-  svg.diagram{width:100%;height:auto;display:block}
-
-  .btnrow{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap}
-  button.act{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
-    padding:9px 15px;background:var(--paper);color:var(--ink);border:1.5px solid var(--ink);cursor:pointer;transition:.12s}
-  button.act:hover{background:var(--ink);color:var(--paper)}
-  button.act.done{background:var(--clear);color:#fff;border-color:var(--clear)}
-
-  .warn{background:var(--paper);border:1.5px solid var(--line-strong);padding:13px 15px;margin-top:16px;
-    font-size:12.5px;color:var(--ink-soft);line-height:1.6;border-left:4px solid var(--inter)}
-  .warn b{color:var(--inter)}
-
-  /* ---- prose sections ---- */
-  section.prose{margin-top:54px;border-top:1.5px solid var(--line-strong);padding-top:26px}
-  section.prose h2{font-family:"Archivo","IBM Plex Sans JP";font-weight:700;font-size:21px;letter-spacing:-.01em;margin-bottom:6px;display:flex;align-items:baseline;gap:12px}
-  section.prose h2 .no{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--accent);letter-spacing:.1em}
-  section.prose p{font-size:14.5px;color:#33312a;margin:10px 0;max-width:74ch}
-  section.prose ul{margin:10px 0 10px 4px;max-width:74ch}
-  section.prose li{font-size:14px;color:#33312a;margin:6px 0;list-style:none;padding-left:20px;position:relative}
-  section.prose li::before{content:"—";position:absolute;left:0;color:var(--accent)}
-  code{font-family:"IBM Plex Mono",monospace;background:var(--paper-2);border:1px solid var(--line);padding:1px 6px;font-size:.92em}
-  table.reftbl{width:100%;border-collapse:collapse;margin:14px 0 6px;font-size:13.5px}
-  table.reftbl th,table.reftbl td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
-  table.reftbl thead th{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);border-bottom:1.5px solid var(--line-strong);background:rgba(255,255,255,.25)}
-  table.reftbl td:first-child{font-family:"IBM Plex Mono",monospace;font-weight:600;color:var(--accent);white-space:nowrap}
-  table.reftbl .ty{font-family:"IBM Plex Mono",monospace;font-size:11px;white-space:nowrap}
-  table.reftbl .ty.c{color:var(--clear)} table.reftbl .ty.t{color:var(--trans)} table.reftbl .ty.i{color:var(--inter)}
-  .faq dt{font-weight:600;font-size:14.5px;color:var(--ink);margin-top:16px}
-  .faq dt::before{content:"Q. ";font-family:"IBM Plex Mono",monospace;color:var(--accent)}
-  .faq dd{font-size:14px;color:#33312a;margin:5px 0 0;max-width:74ch}
-  .faq dd::before{content:"A. ";font-family:"IBM Plex Mono",monospace;color:var(--ink-soft)}
-
-  footer{margin-top:56px;border-top:2px solid var(--ink);padding-top:18px;
-    font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);letter-spacing:.04em;line-height:1.7}
-  footer .disc{color:var(--line-strong);max-width:78ch;margin-top:8px;font-size:10.5px;line-height:1.65}
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "はめあい公差 計算ツール",
-  "url": "https://ohyo04.github.io/fit/",
-  "description": "JIS B 0401 / ISO 286 準拠で、穴・軸の許容寸法、すきま・しめしろ、はめあい種別（すきまばめ／中間ばめ／しまりばめ）を計算するツール。穴基準・軸基準の両対応。",
-  "applicationCategory": "EngineeringApplication",
-  "operatingSystem": "Web",
-  "inLanguage": "ja",
-  "isAccessibleForFree": true,
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  "@type": "WebSite",
+  "name": "機械設計 計算ツール集",
+  "url": "https://ohyo04.github.io/",
+  "description": "機械設計の現場で使える、規格準拠の計算ツール集。",
+  "inLanguage": "ja"
 }
 </script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
+  "@type": "ItemList",
+  "itemListElement": [
     {
-      "@type": "Question",
-      "name": "穴基準と軸基準の違いは？",
-      "acceptedAnswer": { "@type": "Answer", "text": "穴基準は穴側の公差を H に固定し、軸側の記号を変えてはめあいを決める方式です。軸基準は軸側を h に固定し、穴側を変えます。穴は加工後に寸法を調整しにくい（リーマ等の刃物寸法で決まる）ため、一般には穴を基準にする穴基準が推奨されます。1本の軸に複数部品を異なるはめあいで取り付ける場合などに軸基準を使います。" }
+      "@type": "ListItem",
+      "position": 1,
+      "url": "https://ohyo04.github.io/fit/",
+      "name": "はめあい公差 計算ツール"
     },
     {
-      "@type": "Question",
-      "name": "H7/g6 はどんなときに使いますか？",
-      "acceptedAnswer": { "@type": "Answer", "text": "代表的なすきまばめで、精密な摺動・位置決めに使います。常にわずかなすきまがあるため、潤滑下でスムーズに動き、ガタは小さく抑えられます。精密な案内部や軽荷重の回転部などに適します。" }
+      "@type": "ListItem",
+      "position": 2,
+      "url": "https://ohyo04.github.io/bolt/",
+      "name": "ボルト締結 計算ツール"
     },
     {
-      "@type": "Question",
-      "name": "中間ばめとは何ですか？",
-      "acceptedAnswer": { "@type": "Answer", "text": "穴と軸の寸法の組合せによって、すきまにもしめしろにもなり得るはめあいです。位置決め精度が必要で、かつ分解・再組立の可能性がある箇所に使います。例として H7/js6（軽い位置決め）、H7/k6（軽圧入）などがあります。" }
-    },
-    {
-      "@type": "Question",
-      "name": "すきま・しめしろの単位は？",
-      "acceptedAnswer": { "@type": "Answer", "text": "一般に μm（マイクロメートル、1 μm = 0.001 mm）で表します。本ツールでは許容差を μm、穴・軸の許容限界寸法を mm で表示します。" }
-    },
-    {
-      "@type": "Question",
-      "name": "このツールはオフラインで使えますか？",
-      "acceptedAnswer": { "@type": "Answer", "text": "単一の HTML ファイルで外部依存がないため、一度ページを開けばオフラインでも動作します。" }
+      "@type": "ListItem",
+      "position": 3,
+      "url": "https://ohyo04.github.io/tap-drill/",
+      "name": "ねじ下穴径 計算ツール"
     }
   ]
 }
 </script>
+<style>
+  :root{
+    --paper:#f1ede3; --paper-2:#e9e4d6; --ink:#1b1a16; --ink-soft:#52503f;
+    --line:#c9c2af; --line-strong:#9b937c; --accent:#1f3d5c;
+    --clear:#2b6f8e; --clear-bg:#dcebf0; --trans:#b07908;
+    --inter:#a8362b; --grid:rgba(120,112,90,0.10); --grid-strong:rgba(120,112,90,0.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{
+    font-family:"IBM Plex Sans JP",system-ui,sans-serif;color:var(--ink);
+    background:
+      linear-gradient(var(--grid) 1px,transparent 1px),
+      linear-gradient(90deg,var(--grid) 1px,transparent 1px),
+      var(--paper);
+    background-size:24px 24px,24px 24px,auto;line-height:1.65;padding:0 18px 80px;
+  }
+  .wrap{max-width:960px;margin:0 auto}
+
+  header{padding:54px 0 30px;border-bottom:2px solid var(--ink);position:relative}
+  .corner{position:absolute;top:20px;right:0;font-family:"IBM Plex Mono",monospace;font-size:10px;
+    letter-spacing:.2em;color:var(--line-strong);text-align:right;line-height:1.5}
+  .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.34em;
+    text-transform:uppercase;color:var(--ink-soft);display:flex;gap:14px;align-items:center}
+  .eyebrow::before{content:"";width:34px;height:2px;background:var(--accent);display:inline-block}
+  h1{font-family:"Archivo","IBM Plex Sans JP",sans-serif;font-weight:900;
+    font-size:clamp(34px,7vw,58px);line-height:1.02;letter-spacing:-.02em;margin:16px 0 10px}
+  .lead{color:var(--ink-soft);font-size:15.5px;max-width:62ch}
+
+  .meta-strip{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;color:var(--ink-soft)}
+  .meta-strip span{display:flex;align-items:center;gap:7px}
+  .meta-strip span::before{content:"";width:7px;height:7px;background:var(--accent)}
+
+  .grid-tools{display:grid;grid-template-columns:1fr;gap:18px;margin-top:40px}
+  @media(min-width:680px){.grid-tools{grid-template-columns:1fr 1fr}}
+
+  .tool{position:relative;display:flex;flex-direction:column;text-decoration:none;color:inherit;
+    background:var(--paper-2);border:1.5px solid var(--line-strong);padding:22px 20px 20px;
+    box-shadow:4px 4px 0 rgba(27,26,22,.10);transition:transform .14s ease,box-shadow .14s ease}
+  a.tool:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--accent)}
+  .tool .no{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;color:var(--ink-soft)}
+  .tool h2{font-family:"Archivo","IBM Plex Sans JP";font-weight:700;font-size:22px;letter-spacing:-.01em;margin:10px 0 6px}
+  .tool p{font-size:13.5px;color:#413f37;line-height:1.6;flex:1}
+  .pill{position:absolute;top:18px;right:18px;font-family:"IBM Plex Mono",monospace;font-size:10px;
+    letter-spacing:.12em;text-transform:uppercase;padding:4px 9px;border:1.5px solid}
+  .pill.live{color:var(--clear);border-color:var(--clear);background:var(--clear-bg)}
+  .pill.soon{color:var(--ink-soft);border-color:var(--line-strong);background:transparent}
+  .cta{margin-top:16px;font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.08em;
+    color:var(--accent);font-weight:600;display:inline-flex;align-items:center;gap:8px}
+  .cta::after{content:"→";transition:transform .14s ease}
+  a.tool:hover .cta::after{transform:translateX(4px)}
+  .tool.disabled{opacity:.62;cursor:default}
+  .tool.disabled .cta{color:var(--ink-soft);font-weight:400}
+  .tool.disabled .cta::after{content:""}
+
+  section.about{margin-top:54px;border-top:1.5px solid var(--line-strong);padding-top:26px}
+  section.about h3{font-family:"Archivo","IBM Plex Sans JP";font-weight:700;font-size:19px;margin-bottom:8px;
+    display:flex;align-items:baseline;gap:11px}
+  section.about h3 .no{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--accent);letter-spacing:.1em}
+  section.about p{font-size:14.5px;color:#33312a;margin:9px 0;max-width:74ch}
+
+  footer{margin-top:54px;border-top:2px solid var(--ink);padding-top:18px;
+    font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);letter-spacing:.04em;line-height:1.7}
+  footer .disc{color:var(--line-strong);max-width:78ch;margin-top:8px;font-size:10.5px;line-height:1.65}
+</style>
 </head>
 <body>
 <div class="wrap">
 
   <header>
-    <div class="corner">REF / JIS&nbsp;B&nbsp;0401<br>ISO&nbsp;286-2<br>TOOL&nbsp;v1.0</div>
-    <div class="eyebrow">Fit &amp; Tolerance Calculator</div>
-    <h1>はめあい公差 計算ツール</h1>
-    <p class="lead">基準寸法とはめあい記号を選ぶだけ。穴・軸の許容寸法、すきま／しめしろの最大・最小、はめあい種別（すきまばめ・中間ばめ・しまりばめ）を、公差帯ダイアグラム付きで表示します。穴基準・軸基準の両方に対応。</p>
+    <div class="corner">MECH&nbsp;DESIGN<br>TOOLS&nbsp;/&nbsp;JP<br>EST.&nbsp;2026</div>
+    <div class="eyebrow">Mechanical Design · Calculation Tools</div>
+    <h1>機械設計の<br>計算ツール集</h1>
+    <p class="lead">設計実務の知見をベースに、規格に基づいた計算ツールをブラウザ完結で公開しています。すべて登録不要・無料。日々の作図・検討のかたわらで、サッと値を確認するために。</p>
+    <div class="meta-strip">
+      <span>規格準拠（JIS / ISO）</span>
+      <span>登録不要・無料</span>
+      <span>ブラウザ完結・オフライン可</span>
+    </div>
   </header>
 
-  <div class="grid-main">
+  <div class="grid-tools">
 
-    <!-- INPUT -->
-    <div class="card">
-      <div class="card-h"><span>入力 / Input</span><span id="rangeBadge">3 &lt; D ≤ 400</span></div>
-      <div class="card-b">
-        <label class="fld">
-          <span class="lab">基準寸法 D</span>
-          <span class="dimrow">
-            <input type="number" id="dim" value="25" min="3.001" max="400" step="0.1" inputmode="decimal">
-            <span class="unit">mm</span>
-          </span>
-          <span class="hint">対応範囲：3 mm 超 〜 400 mm</span>
-        </label>
+    <a class="tool" href="fit/">
+      <span class="pill live">公開中</span>
+      <span class="no">TOOL 01</span>
+      <h2>はめあい公差 計算</h2>
+      <p>基準寸法とはめあい記号（H7/g6 など）から、穴・軸の許容寸法、すきま／しめしろ、はめあい種別を公差帯ダイアグラム付きで計算。穴基準・軸基準の両対応（JIS B 0401 / ISO 286）。</p>
+      <span class="cta">ツールを開く</span>
+    </a>
 
-        <label class="fld">
-          <span class="lab">定番はめあい プリセット</span>
-          <select id="preset">
-            <option value="">— 任意に選ぶ（下で穴・軸を指定）—</option>
-          </select>
-          <span class="hint" id="presetNote">&nbsp;</span>
-        </label>
+    <a class="tool" href="bolt/">
+      <span class="pill live">公開中</span>
+      <span class="no">TOOL 02</span>
+      <h2>ボルト締結 計算</h2>
+      <p>呼び径・強度区分・潤滑条件から、締付トルクと軸力を相互換算。引張応力と降伏に対する利用率をゲージで表示（メートル並目・ISO 898）。</p>
+      <span class="cta">ツールを開く</span>
+    </a>
 
-        <div class="pair">
-          <label class="fld">
-            <span class="lab">穴（あな）</span>
-            <select id="hole"></select>
-          </label>
-          <label class="fld">
-            <span class="lab">軸（じく）</span>
-            <select id="shaft"></select>
-          </label>
-        </div>
-      </div>
-    </div>
-
-    <!-- RESULT -->
-    <div class="card">
-      <div class="card-h"><span>結果 / Result</span><span id="combo">H7 / g6</span></div>
-      <div class="card-b">
-        <div id="result"></div>
-      </div>
-    </div>
+    <a class="tool" href="tap-drill/">
+      <span class="pill live">公開中</span>
+      <span class="no">TOOL 03</span>
+      <h2>ねじ下穴径（タップ下穴）</h2>
+      <p>メートルねじの下穴径を、呼び径・ピッチ・ひっかかり率から計算。標準推奨（呼び径−ピッチ）と早見表付き。並目・細目に対応。</p>
+      <span class="cta">ツールを開く</span>
+    </a>
 
   </div>
 
-  <!-- PROSE / SEO -->
-  <section class="prose">
-    <h2><span class="no">01</span>はめあいとは</h2>
-    <p>「はめあい」とは、穴と軸を組み合わせたときの、すきま（ゆるさ）やしめしろ（締まり具合）の関係を指します。同じ呼び寸法でも、穴と軸それぞれに許容差（公差）があるため、組み合わせによって動く・固定される・圧入が必要、といった機能が決まります。JIS B 0401（ISO 286 と整合）は、この公差を <code>H7</code> や <code>g6</code> のような記号（アルファベット＝基準位置、数字＝IT等級）で体系化しています。</p>
-    <ul>
-      <li><b>すきまばめ</b>：常にすきまがある（最小すきま ≥ 0）。回転・摺動部に。例：H7/g6, H7/f7</li>
-      <li><b>中間ばめ</b>：組合せによりすきま・しめしろのどちらにもなり得る。位置決めに。例：H7/k6, H7/js6</li>
-      <li><b>しまりばめ</b>：常にしめしろがある（圧入が必要）。トルク伝達・固定に。例：H7/p6</li>
-    </ul>
-
-    <h2 style="margin-top:30px"><span class="no">02</span>はめあいの選び方</h2>
-    <p>はめあいは「その部位に求める機能」から逆算して選ぶのが基本です。動かす／着脱するなら<b>すきまばめ</b>、位置を正確に出しつつ分解の可能性があるなら<b>中間ばめ</b>、固定してトルクを伝えたい・分解しないなら<b>しまりばめ</b>、という対応が出発点になります。</p>
-    <p>また、原則は<b>穴基準（穴を H に固定し、軸側で調整）</b>です。穴はリーマやブローチなど刃物の寸法で仕上がりが決まり後から微調整しにくい一方、軸は削って合わせやすいため、軸側で組合せを変える方が経済的だからです。1本の軸に複数の部品を異なるはめあいで取り付けたい場合などに、例外的に軸基準（h 固定）を使います。</p>
-    <table class="reftbl">
-      <thead><tr><th>はめあい</th><th>種別</th><th>代表的な用途</th></tr></thead>
-      <tbody>
-        <tr><td>H7/g6</td><td class="ty c">すきまばめ</td><td>精密な摺動・位置決め。ガタを抑えつつ滑らかに動かす部位</td></tr>
-        <tr><td>H7/f7</td><td class="ty c">すきまばめ</td><td>一般的な回転部・軸受まわり（潤滑下で回す）</td></tr>
-        <tr><td>H7/h6</td><td class="ty c">すきまばめ</td><td>はめ込み・案内（最小すきま）。頻繁な着脱</td></tr>
-        <tr><td>H7/js6</td><td class="ty t">中間ばめ</td><td>軽い位置決め。分解・再組立を想定する箇所</td></tr>
-        <tr><td>H7/k6</td><td class="ty t">中間ばめ</td><td>軽圧入・位置決め。キー併用での固定など</td></tr>
-        <tr><td>H7/n6</td><td class="ty t">中間ばめ</td><td>振動部などの堅めの位置決め（ほぼ動かさない）</td></tr>
-        <tr><td>H7/p6</td><td class="ty i">しまりばめ</td><td>軽圧入・トルク伝達。ブッシュ／軸受の固定</td></tr>
-      </tbody>
-    </table>
-    <p style="font-size:12.5px;color:var(--ink-soft)">※ 用途は一般的な目安です。荷重・潤滑・温度・材質・組立方法によって最適なはめあいは変わります。最終的な等級は使用条件に合わせて判断してください。</p>
-
-    <h2 style="margin-top:30px"><span class="no">03</span>使い方</h2>
-    <ul>
-      <li>基準寸法 D（mm）を入力する</li>
-      <li>定番プリセットから選ぶ、または穴・軸の記号を個別に指定する</li>
-      <li>穴／軸の許容寸法、すきま・しめしろ、はめあい種別が即時に表示される</li>
-      <li>右の公差帯ダイアグラムで、ゼロ線（基準寸法）に対する穴帯・軸帯の位置関係を確認できる</li>
-    </ul>
-
-    <h2 style="margin-top:30px"><span class="no">04</span>よくある質問</h2>
-    <dl class="faq">
-      <dt>穴基準と軸基準の違いは？</dt>
-      <dd>穴基準は穴側を H に固定し軸側の記号を変える方式、軸基準は軸側を h に固定し穴側を変える方式です。穴は加工後に寸法を調整しにくいため、一般には穴基準が推奨されます。1本の軸に複数部品を異なるはめあいで付ける場合などに軸基準を使います。</dd>
-      <dt>H7/g6 はどんなときに使う？</dt>
-      <dd>代表的なすきまばめで、精密な摺動・位置決めに使います。常にわずかなすきまがあるため潤滑下で滑らかに動き、ガタは小さく抑えられます。</dd>
-      <dt>中間ばめとは？</dt>
-      <dd>穴と軸の組合せによってすきまにもしめしろにもなり得るはめあいです。位置決め精度が必要で、かつ分解の可能性がある箇所に使います（例：H7/js6、H7/k6）。</dd>
-      <dt>すきま・しめしろの単位は？</dt>
-      <dd>一般に μm（1 μm = 0.001 mm）で表します。本ツールでは許容差を μm、許容限界寸法を mm で表示します。</dd>
-      <dt>オフラインで使える？</dt>
-      <dd>単一HTMLで外部依存がないため、一度開けばオフラインでも動作します。</dd>
-    </dl>
-
-    <h2 style="margin-top:30px"><span class="no">05</span>対応範囲と仕様</h2>
-    <p>本ツール v1 は、基準寸法 <b>3 mm 超〜400 mm</b>、IT等級 5〜11 の範囲で、定番の穴・軸記号（F〜P／d〜p）に対応しています。重しまりばめ（r／s／u 等）および 3 mm 以下は、寸法区分の細分が必要なため v2 で対応予定です。穴の K／M／N／P 等級は ISO 286 の特別規則（Δ補正）に基づいて算出しています。</p>
+  <section class="about">
+    <h3><span class="no">/01</span>このサイトについて</h3>
+    <p>汎用的なツールはすでに数多くありますが、ここでは「機械設計の現場で実際に必要になる計算」を、規格値に基づいて正しく扱うことを大切にしています。数値は規格（JIS / ISO）を根拠にしつつ、設計実務の視点で使い方や選び方も添えていきます。</p>
+    <p>ツールは今後すこしずつ追加していきます。まずは「はめあい公差 計算」から、ぜひお使いください。</p>
   </section>
 
   <footer>
-    はめあい公差 計算ツール v1.0 ｜ 規格根拠：JIS B 0401-1/-2 ・ ISO 286-1/-2<br>
-    <span class="disc">免責：本ツールの数値は ISO 286 / JIS B 0401 に基づいて実装していますが、参考値です。実際の設計・製作・検査に用いる際は、必ず最新のJIS規格票（規格表）でご確認ください。本ツールの利用により生じたいかなる損害についても、作成者は責任を負いません。</span>
+    機械設計 計算ツール集 ｜ Mechanical Design Calculation Tools<br>
+    <span class="disc">免責：各ツールの数値は規格（JIS / ISO）に基づく参考値です。実際の設計・製作・検査に用いる際は、必ず最新の規格票でご確認ください。本サイトの利用により生じたいかなる損害についても、作成者は責任を負いません。</span>
   </footer>
 
 </div>
-
-<script>
-/* ===================== ISO 286 / JIS B 0401 data ===================== */
-const RANGES=[[3,6],[6,10],[10,18],[18,30],[30,50],[50,80],[80,120],[120,180],[180,250],[250,315],[315,400]];
-const IT={
-  5:[5,6,8,9,11,13,15,18,20,23,25],
-  6:[8,9,11,13,16,19,22,25,29,32,36],
-  7:[12,15,18,21,25,30,35,40,46,52,57],
-  8:[18,22,27,33,39,46,54,63,72,81,89],
-  9:[30,36,43,52,62,74,87,100,115,130,140],
-  10:[48,58,70,84,100,120,140,160,185,210,230],
-  11:[75,90,110,130,160,190,220,250,290,320,360],
-};
-/* shaft fundamental deviations (μm). es-type: upper dev (≤0). ei-type: lower dev (≥0). */
-const SHAFT={
-  d:{t:'es',v:[-30,-40,-50,-65,-80,-100,-120,-145,-170,-190,-210]},
-  e:{t:'es',v:[-20,-25,-32,-40,-50,-60,-72,-85,-100,-110,-125]},
-  f:{t:'es',v:[-10,-13,-16,-20,-25,-30,-36,-43,-50,-56,-62]},
-  g:{t:'es',v:[-4,-5,-6,-7,-9,-10,-12,-14,-15,-17,-18]},
-  h:{t:'es',v:[0,0,0,0,0,0,0,0,0,0,0]},
-  js:{t:'js'},
-  k:{t:'ei',v:[1,1,1,2,2,2,3,3,4,4,4]},
-  m:{t:'ei',v:[4,6,7,8,9,11,13,15,17,20,21]},
-  n:{t:'ei',v:[8,10,12,15,17,20,23,27,31,34,37]},
-  p:{t:'ei',v:[12,15,18,22,26,32,37,43,50,56,62]},
-};
-/* hole fundamental deviations (μm). EI-type: lower dev (≥0). K/M/N/P via special rule. */
-const HOLE_EI={
-  F:[10,13,16,20,25,30,36,43,50,56,62],
-  G:[4,5,6,7,9,10,12,14,15,17,18],
-};
-const HOLE_OPTS=['F7','F8','G6','G7','H6','H7','H8','H9','JS6','JS7','K6','K7','M6','M7','N6','N7','P6','P7'];
-const SHAFT_OPTS=['d9','e8','f6','f7','g5','g6','h5','h6','h7','h8','h9','js5','js6','js7','k5','k6','m5','m6','n5','n6','p5','p6'];
-
-const PRESETS=[
-  {g:'穴基準 H ・ すきまばめ',items:[
-    {h:'H7',s:'g6',note:'精密な摺動・位置決め'},
-    {h:'H7',s:'h6',note:'最小すきま・はめ込み'},
-    {h:'H7',s:'f7',note:'一般的な回転部'},
-    {h:'H8',s:'f7',note:'やや緩い回転部'},
-    {h:'H9',s:'d9',note:'大きなすきま・粗い回転'},
-  ]},
-  {g:'穴基準 H ・ 中間ばめ',items:[
-    {h:'H7',s:'js6',note:'軽い中間・分解可能'},
-    {h:'H7',s:'k6',note:'軽圧入・位置決め'},
-    {h:'H7',s:'m6',note:'中間ばめ'},
-    {h:'H7',s:'n6',note:'やや堅い中間'},
-  ]},
-  {g:'穴基準 H ・ しまりばめ',items:[
-    {h:'H7',s:'p6',note:'軽圧入・固定'},
-    {h:'H6',s:'p5',note:'精級しまり'},
-  ]},
-  {g:'軸基準 h',items:[
-    {h:'G7',s:'h6',note:'すきま・摺動'},
-    {h:'F8',s:'h7',note:'回転部'},
-    {h:'JS7',s:'h6',note:'中間ばめ'},
-    {h:'K7',s:'h6',note:'軽圧入'},
-    {h:'N7',s:'h6',note:'堅い中間'},
-    {h:'P7',s:'h6',note:'しまりばめ'},
-  ]},
-];
-
-/* ===================== calc ===================== */
-function rangeIndex(d){ if(!(d>3)||d>400) return -1; for(let i=0;i<RANGES.length;i++){if(d>RANGES[i][0]&&d<=RANGES[i][1])return i;} return -1; }
-function split(code){ return {L:code.replace(/[0-9]/g,''), g:+code.replace(/[^0-9]/g,'')}; }
-function holeDev(code,ri){
-  const {L,g}=split(code), it=IT[g][ri];
-  if(L==='H') return {ES:it,EI:0};
-  if(L==='JS') return {ES:it/2,EI:-it/2};
-  if(HOLE_EI[L]){const EI=HOLE_EI[L][ri];return {EI,ES:EI+it};}
-  const fd=SHAFT[L.toLowerCase()].v[ri], delta=IT[g][ri]-IT[g-1][ri], ES=-fd+delta;
-  return {ES,EI:ES-it};
-}
-function shaftDev(code,ri){
-  const {L,g}=split(code), it=IT[g][ri], s=SHAFT[L];
-  if(s.t==='js') return {es:it/2,ei:-it/2};
-  if(s.t==='es'){const es=s.v[ri];return {es,ei:es-it};}
-  const ei=s.v[ri];return {es:ei+it,ei};
-}
-
-/* ===================== format ===================== */
-function um(x){ if(x===0)return'0'; const s=x>0?'+':'−',a=Math.abs(x); return s+(Number.isInteger(a)?a:a.toFixed(1)); }
-function mm(x){ let s=x.toFixed(4).replace(/0+$/,''); let p=s.split('.'); let d=p[1]||''; while(d.length<3)d+='0'; return p[0]+'.'+d; }
-function el(id){return document.getElementById(id);}
-
-/* ===================== diagram ===================== */
-function diagram(h,s){
-  const W=480,H=300,L=84,R=430,T=30,B=270,PH=B-T;
-  const vals=[h.ES,h.EI,s.es,s.ei,0];
-  let mx=Math.max(...vals),mn=Math.min(...vals),span=mx-mn||10;
-  const pad=Math.max(span*0.18,4); const top=mx+pad,bot=mn-pad;
-  const y=v=>T+(top-v)/(top-bot)*PH;
-  // nice step
-  const rough=(top-bot)/5,pw=Math.pow(10,Math.floor(Math.log10(rough))),n=rough/pw;
-  let st=(n<1.5?1:n<3?2:n<7?5:10)*pw;
-  if(!isFinite(st)||st<=0) st=Math.max(1,Math.round((top-bot)/5));
-  let ticks='';
-  const start=Math.ceil(bot/st)*st, end=Math.floor(top/st)*st;
-  for(let v=start;v<=end+1e-9;v+=st){
-    const yy=y(v).toFixed(1);
-    ticks+=`<line x1="${L}" y1="${yy}" x2="${R}" y2="${yy}" stroke="var(--grid-strong)" stroke-width="1" stroke-dasharray="2 4"/>`+
-           `<text x="${L-8}" y="${(+yy+3.5).toFixed(1)}" text-anchor="end" font-family="IBM Plex Mono" font-size="10" fill="var(--line-strong)">${v===0?0:(v>0?'+':'')+Math.round(v)}</text>`;
-  }
-  const zy=y(0).toFixed(1);
-  // hole band
-  const hX=150,hW=86, hTop=y(h.ES),hBot=y(h.EI),hH=Math.max(hBot-hTop,3);
-  // shaft band
-  const sX=320,sW=86, sTop=y(s.es),sBot=y(s.ei),sH=Math.max(sBot-sTop,3);
-  const cls=fitType(h,s).type;
-  const sFill=cls==='clearance'?'var(--clear)':cls==='transition'?'var(--trans)':'var(--inter)';
-  const sBg  =cls==='clearance'?'var(--clear-bg)':cls==='transition'?'var(--trans-bg)':'var(--inter-bg)';
-  return `<svg class="diagram" viewBox="0 0 ${W} ${H}" role="img" aria-label="公差帯ダイアグラム">
-    <text x="${L-8}" y="18" text-anchor="end" font-family="IBM Plex Mono" font-size="10" fill="var(--ink-soft)">μm</text>
-    ${ticks}
-    <line x1="${L}" y1="${zy}" x2="${R}" y2="${zy}" stroke="var(--ink)" stroke-width="1.4" stroke-dasharray="6 4"/>
-    <text x="${R}" y="${(+zy-5)}" text-anchor="end" font-family="IBM Plex Mono" font-size="10" fill="var(--ink-soft)">0（基準寸法）</text>
-    <!-- hole -->
-    <rect x="${hX}" y="${hTop.toFixed(1)}" width="${hW}" height="${hH.toFixed(1)}" fill="var(--accent)" fill-opacity="0.16" stroke="var(--accent)" stroke-width="1.6"/>
-    <text x="${hX+hW/2}" y="20" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="600" fill="var(--accent)">穴 ${el('hole').value}</text>
-    <text x="${hX+hW+8}" y="${(hTop+3.5).toFixed(1)}" font-family="IBM Plex Mono" font-size="10.5" fill="var(--accent)">${um(h.ES)}</text>
-    <text x="${hX+hW+8}" y="${(hBot+3.5).toFixed(1)}" font-family="IBM Plex Mono" font-size="10.5" fill="var(--accent)">${um(h.EI)}</text>
-    <!-- shaft -->
-    <rect x="${sX}" y="${sTop.toFixed(1)}" width="${sW}" height="${sH.toFixed(1)}" fill="${sBg}" stroke="${sFill}" stroke-width="1.6"/>
-    <text x="${sX+sW/2}" y="20" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="600" fill="${sFill}">軸 ${el('shaft').value}</text>
-    <text x="${sX+sW+8}" y="${(sTop+3.5).toFixed(1)}" font-family="IBM Plex Mono" font-size="10.5" fill="${sFill}">${um(s.es)}</text>
-    <text x="${sX+sW+8}" y="${(sBot+3.5).toFixed(1)}" font-family="IBM Plex Mono" font-size="10.5" fill="${sFill}">${um(s.ei)}</text>
-  </svg>`;
-}
-
-function fitType(h,s){
-  const maxC=h.ES-s.ei, minC=h.EI-s.es;
-  let type,jp,en;
-  if(minC>=0){type='clearance';jp='すきまばめ';en='Clearance fit';}
-  else if(maxC<=0){type='interference';jp='しまりばめ';en='Interference fit';}
-  else{type='transition';jp='中間ばめ';en='Transition fit';}
-  return {type,jp,en,maxC,minC};
-}
-
-/* ===================== render ===================== */
-function compute(){
-  const d=parseFloat(el('dim').value);
-  const ri=rangeIndex(d);
-  el('combo').textContent=el('hole').value+' / '+el('shaft').value;
-  if(ri<0){
-    el('result').innerHTML=`<div class="warn" style="border-left-color:var(--trans)"><b style="color:var(--trans)">範囲外</b> ＝ 対応範囲は <b style="color:var(--ink)">3 mm 超 〜 400 mm</b> です。基準寸法を確認してください。</div>`;
-    return;
-  }
-  const h=holeDev(el('hole').value,ri), s=shaftDev(el('shaft').value,ri);
-  const f=fitType(h,s);
-  const hi=d+h.ES/1000, lo=d+h.EI/1000, si=d+s.es/1000, sl=d+s.ei/1000;
-
-  // clearance/interference rows depending on type
-  let rows='';
-  if(f.type==='clearance'){
-    rows=`<div class="row"><span class="k">最小すきま</span><span class="v">${um(f.minC)}<small>μm</small></span></div>
-          <div class="row"><span class="k">最大すきま</span><span class="v">${um(f.maxC)}<small>μm</small></span></div>`;
-  }else if(f.type==='interference'){
-    rows=`<div class="row"><span class="k">最小しめしろ</span><span class="v">${um(-f.maxC)}<small>μm</small></span></div>
-          <div class="row"><span class="k">最大しめしろ</span><span class="v">${um(-f.minC)}<small>μm</small></span></div>`;
-  }else{
-    rows=`<div class="row"><span class="k">最大すきま</span><span class="v">${um(f.maxC)}<small>μm</small></span></div>
-          <div class="row"><span class="k">最大しめしろ</span><span class="v">${um(-f.minC)}<small>μm</small></span></div>`;
-  }
-
-  el('result').innerHTML=`
-    <div class="badge ${f.type}">${f.jp}<span class="en">${f.en}</span></div>
-
-    <table class="dim">
-      <tr><th>部位</th><th>上の許容差</th><th>下の許容差</th><th>許容限界寸法</th></tr>
-      <tr class="part-hole"><td class="lab">穴 ${el('hole').value}</td>
-        <td class="${h.ES<0?'neg':'pos'}">${um(h.ES)}</td>
-        <td class="${h.EI<0?'neg':'pos'}">${um(h.EI)}</td>
-        <td>${mm(hi)} / ${mm(lo)}</td></tr>
-      <tr class="part-shaft"><td class="lab">軸 ${el('shaft').value}</td>
-        <td class="${s.es<0?'neg':'pos'}">${um(s.es)}</td>
-        <td class="${s.ei<0?'neg':'pos'}">${um(s.ei)}</td>
-        <td>${mm(si)} / ${mm(sl)}</td></tr>
-    </table>
-    <div class="hint" style="margin-top:7px">許容差の単位：μm（マイクロメートル）／ 許容限界寸法：mm（最大 / 最小）</div>
-
-    <div class="fitnums">${rows}</div>
-
-    <div class="diagram-wrap">${diagram(h,s)}</div>
-
-    <div class="btnrow">
-      <button class="act" id="copyBtn" type="button">結果をコピー</button>
-    </div>
-
-    <div class="warn"><b>要確認：</b>本ツールの数値は参考値です。実設計・製作に使う前に、<b>JIS B 0401 規格票で照合</b>してください（特に中間ばめ・しまりばめ）。</div>
-  `;
-
-  el('copyBtn').addEventListener('click',()=>{
-    const txt=
-`はめあい ${el('hole').value}/${el('shaft').value}  基準寸法 φ${d} mm  [${f.jp}]
-穴 ${el('hole').value}: ${um(h.ES)}/${um(h.EI)} μm  → ${mm(hi)}/${mm(lo)} mm
-軸 ${el('shaft').value}: ${um(s.es)}/${um(s.ei)} μm  → ${mm(si)}/${mm(sl)} mm
-`+(f.type==='clearance'?`すきま ${um(f.minC)}〜${um(f.maxC)} μm`
-  :f.type==='interference'?`しめしろ ${um(-f.maxC)}〜${um(-f.minC)} μm`
-  :`最大すきま ${um(f.maxC)} μm / 最大しめしろ ${um(-f.minC)} μm`)
-+`\n(JIS B 0401 / ISO 286 ・参考値)`;
-    navigator.clipboard.writeText(txt).then(()=>{
-      const b=el('copyBtn'); b.textContent='コピーしました ✓'; b.classList.add('done');
-      setTimeout(()=>{b.textContent='結果をコピー';b.classList.remove('done');},1600);
-    }).catch(()=>{});
-  });
-}
-
-/* ===================== init ===================== */
-function fillSelects(){
-  el('hole').innerHTML=HOLE_OPTS.map(o=>`<option ${o==='H7'?'selected':''}>${o}</option>`).join('');
-  el('shaft').innerHTML=SHAFT_OPTS.map(o=>`<option ${o==='g6'?'selected':''}>${o}</option>`).join('');
-  let opt='';
-  PRESETS.forEach((grp,gi)=>{ opt+=`<optgroup label="${grp.g}">`; grp.items.forEach((it,ii)=>{opt+=`<option value="${gi}:${ii}">${it.h} / ${it.s}　— ${it.note}</option>`;}); opt+=`</optgroup>`; });
-  el('preset').insertAdjacentHTML('beforeend',opt);
-}
-fillSelects();
-
-el('dim').addEventListener('input',compute);
-el('hole').addEventListener('change',()=>{el('preset').value='';el('presetNote').innerHTML='&nbsp;';compute();});
-el('shaft').addEventListener('change',()=>{el('preset').value='';el('presetNote').innerHTML='&nbsp;';compute();});
-el('preset').addEventListener('change',e=>{
-  if(!e.target.value)return;
-  const [gi,ii]=e.target.value.split(':').map(Number), it=PRESETS[gi].items[ii];
-  el('hole').value=it.h; el('shaft').value=it.s;
-  el('presetNote').textContent=PRESETS[gi].g+'　/　'+it.note;
-  compute();
-});
-compute();
-</script>
 </body>
 </html>
