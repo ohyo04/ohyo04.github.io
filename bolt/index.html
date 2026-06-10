@@ -146,6 +146,14 @@
   footer{margin-top:56px;border-top:2px solid var(--ink);padding-top:18px;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);letter-spacing:.04em;line-height:1.7}
   footer a{color:var(--accent);text-decoration:none}
   footer .disc{color:var(--line-strong);max-width:78ch;margin-top:8px;font-size:10.5px;line-height:1.65}
+  .reltools{margin-top:48px;border-top:2px solid var(--ink);padding-top:22px}
+  .reltools h2{font-family:"Archivo","IBM Plex Sans JP",sans-serif;font-weight:700;font-size:16px;margin:0 0 14px;letter-spacing:-.01em}
+  .reltools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  @media(max-width:680px){.reltools-grid{grid-template-columns:1fr}}
+  .reltools-grid a{display:block;border:1.5px solid var(--line-strong);background:var(--paper-2);padding:13px 15px;text-decoration:none;color:var(--ink);box-shadow:3px 3px 0 rgba(27,26,22,.10);transition:transform .14s ease,box-shadow .14s ease,border-color .14s ease}
+  .reltools-grid a:hover{border-color:var(--accent);transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--accent)}
+  .reltools-name{display:block;font-family:"Archivo","IBM Plex Sans JP",sans-serif;font-weight:700;font-size:14px}
+  .reltools-desc{display:block;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);margin-top:3px;letter-spacing:.02em}
 </style>
 </head>
 <body>
@@ -250,6 +258,15 @@
     <h2 style="margin-top:30px"><span class="no">05</span>対応範囲と仕様</h2>
     <p>本ツール v1 は、<b>メートル並目ねじ M3〜M36</b>、強度区分 <b>4.8 / 8.8 / 10.9 / 12.9</b> に対応。トルク－軸力は簡易式 <code>T = K·F·d</code>、応力断面積は <code>As = 0.7854×(d − 0.9382×P)²</code> で算出します。細目ねじ、座面・ねじ部の摩擦を分離した詳細計算、軸力ばらつき・外力分担・繰返し荷重の評価は今後の対応予定です。</p>
   </section>
+
+  <nav class="reltools">
+    <h2>関連ツール</h2>
+    <div class="reltools-grid">
+      <a href="../fit/"><span class="reltools-name">はめあい公差</span><span class="reltools-desc">JIS B 0401 / ISO 286</span></a>
+      <a href="../tap-drill/"><span class="reltools-name">ねじ下穴径</span><span class="reltools-desc">JIS B 0205 / B 1004</span></a>
+      <a href="../roughness/"><span class="reltools-name">表面粗さ</span><span class="reltools-desc">JIS B 0601・Ra/Rz/λc</span></a>
+    </div>
+  </nav>
 
   <footer>
     ボルト締結 計算ツール v1.0 ｜ <a href="../">ツール集トップ</a> ｜ 規格根拠：ISO 898-1 ・ JIS B 1051 系<br>

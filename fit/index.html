@@ -152,6 +152,17 @@
   footer{margin-top:56px;border-top:2px solid var(--ink);padding-top:18px;
     font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);letter-spacing:.04em;line-height:1.7}
   footer .disc{color:var(--line-strong);max-width:78ch;margin-top:8px;font-size:10.5px;line-height:1.65}
+  .crumb{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;color:var(--ink-soft);padding-top:20px}
+  .crumb a{color:var(--accent);text-decoration:none}
+  .crumb a:hover{text-decoration:underline}
+  .reltools{margin-top:48px;border-top:2px solid var(--ink);padding-top:22px}
+  .reltools h2{font-family:"Archivo","IBM Plex Sans JP",sans-serif;font-weight:700;font-size:16px;margin:0 0 14px;letter-spacing:-.01em}
+  .reltools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  @media(max-width:680px){.reltools-grid{grid-template-columns:1fr}}
+  .reltools-grid a{display:block;border:1.5px solid var(--line-strong);background:var(--paper-2);padding:13px 15px;text-decoration:none;color:var(--ink);box-shadow:3px 3px 0 rgba(27,26,22,.10);transition:transform .14s ease,box-shadow .14s ease,border-color .14s ease}
+  .reltools-grid a:hover{border-color:var(--accent);transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--accent)}
+  .reltools-name{display:block;font-family:"Archivo","IBM Plex Sans JP",sans-serif;font-weight:700;font-size:14px}
+  .reltools-desc{display:block;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);margin-top:3px;letter-spacing:.02em}
 </style>
 <script type="application/ld+json">
 {
@@ -203,6 +214,8 @@
 </head>
 <body>
 <div class="wrap">
+
+  <div class="crumb"><a href="../">← 機械設計 計算ツール集</a></div>
 
   <header>
     <div class="corner">REF / JIS&nbsp;B&nbsp;0401<br>ISO&nbsp;286-2<br>TOOL&nbsp;v1.0</div>
@@ -310,8 +323,17 @@
     <p>本ツール v1 は、基準寸法 <b>3 mm 超〜400 mm</b>、IT等級 5〜11 の範囲で、定番の穴・軸記号（F〜P／d〜p）に対応しています。重しまりばめ（r／s／u 等）および 3 mm 以下は、寸法区分の細分が必要なため v2 で対応予定です。穴の K／M／N／P 等級は ISO 286 の特別規則（Δ補正）に基づいて算出しています。</p>
   </section>
 
+  <nav class="reltools">
+    <h2>関連ツール</h2>
+    <div class="reltools-grid">
+      <a href="../bolt/"><span class="reltools-name">ボルト締結</span><span class="reltools-desc">ISO 898・トルク/軸力</span></a>
+      <a href="../tap-drill/"><span class="reltools-name">ねじ下穴径</span><span class="reltools-desc">JIS B 0205 / B 1004</span></a>
+      <a href="../roughness/"><span class="reltools-name">表面粗さ</span><span class="reltools-desc">JIS B 0601・Ra/Rz/λc</span></a>
+    </div>
+  </nav>
+
   <footer>
-    はめあい公差 計算ツール v1.0 ｜ 規格根拠：JIS B 0401-1/-2 ・ ISO 286-1/-2<br>
+    はめあい公差 計算ツール v1.0 ｜ <a href="../">ツール集トップ</a> ｜ 規格根拠：JIS B 0401-1/-2 ・ ISO 286-1/-2<br>
     <span class="disc">免責：本ツールの数値は ISO 286 / JIS B 0401 に基づいて実装していますが、参考値です。実際の設計・製作・検査に用いる際は、必ず最新のJIS規格票（規格表）でご確認ください。本ツールの利用により生じたいかなる損害についても、作成者は責任を負いません。</span>
   </footer>
 

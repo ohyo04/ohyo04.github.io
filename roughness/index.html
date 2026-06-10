@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>表面粗さ 換算・早見ツール｜Ra・Rz・カットオフ・JIS B 0601・無料</title>
+<meta name="description" content="Ra（算術平均粗さ）から標準カットオフ λc、Rz の目安、旧仕上げ記号 ▽、対応する加工法をまとめて早見。JIS B 0601 / B 0633 準拠。新旧 JIS で異なる Rz の定義も解説。ブラウザだけで動く無料ツール。">
+<link rel="canonical" href="https://ohyo04.github.io/roughness/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="表面粗さ 換算・早見ツール｜Ra・Rz・カットオフ">
+<meta property="og:description" content="Ra から λc・Rz目安・▽記号・加工法を早見。JIS B 0601 / B 0633 準拠。新旧 Rz の定義の違いも解説。">
+<meta property="og:url" content="https://ohyo04.github.io/roughness/">
+<meta property="og:locale" content="ja_JP">
+<meta name="robots" content="index,follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Sans+JP:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "表面粗さ 換算・早見ツール",
+  "url": "https://ohyo04.github.io/roughness/",
+  "applicationCategory": "EngineeringApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
+  "description": "Ra から標準カットオフ λc、Rz の目安、旧仕上げ記号 ▽、対応する加工法を早見する。JIS B 0601 / B 0633 準拠。",
+  "inLanguage": "ja"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Ra と Rz はどう違いますか？",
+      "acceptedAnswer": { "@type": "Answer", "text": "Ra（算術平均粗さ）は基準長さ内の凹凸を平均化した値で、面の平均的なザラつきを表します。Rz（最大高さ粗さ）は基準長さ内の最も高い山と最も深い谷の合計で、局所的な突起や傷を捉えやすい指標です。同じ面でも目的によって使い分けます。" }
+    },
+    {
+      "@type": "Question",
+      "name": "Ra から Rz は計算できますか？",
+      "acceptedAnswer": { "@type": "Answer", "text": "厳密な換算式は規格で定められていません。比は加工法や形状で変わり、おおむね Rz ≒ 3〜7 倍の幅があります。目安としては Rz ≒ 4×Ra 程度が使われますが、確定値が必要な場合は実測してください。本ツールの Rz 表示はあくまで目安です。" }
+    },
+    {
+      "@type": "Question",
+      "name": "カットオフ λc はどう決めますか？",
+      "acceptedAnswer": { "@type": "Answer", "text": "JIS B 0633 / ISO 4288 で Ra の値域ごとに標準カットオフが決まっています。例えば Ra 0.1〜2µm なら λc=0.8mm、評価長さは λc の 5 倍です。本ツールは入力した Ra から標準 λc を自動表示します。" }
+    },
+    {
+      "@type": "Question",
+      "name": "旧図面の Rz は今の Rz と同じ意味ですか？",
+      "acceptedAnswer": { "@type": "Answer", "text": "異なる場合があります。1994 年版 JIS の Rz は十点平均粗さ（現在の Rzjis）で、現行 JIS B 0601 の Rz は最大高さ粗さ（旧 Ry に相当）です。図面の年代や引用規格を確認してください。" }
+    },
+    {
+      "@type": "Question",
+      "name": "▽（三角）記号と Ra の対応は？",
+      "acceptedAnswer": { "@type": "Answer", "text": "旧 JIS の仕上げ記号で、三角の数が多いほど滑らかです。目安として ▽ が荒仕上げ（Ra 12.5〜25）、▽▽ が中仕上げ（Ra 3.2〜6.3）、▽▽▽ が上仕上げ（Ra 0.8〜1.6）、▽▽▽▽ が精密仕上げ（Ra 0.1〜0.4）。あくまで目安で、現行図面では Ra 値で指示します。" }
+    }
+  ]
+}
+</script>
+<style>
+:root{
+  --paper:#f1ede3; --paper-2:#e9e4d6; --ink:#1b1a16; --ink-soft:#52503f;
+  --line:#c9c2af; --line-strong:#9b937c; --accent:#1f3d5c;
+  --teal:#2b6f8e; --amber:#b07908; --danger:#a8362b;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:"IBM Plex Sans JP",sans-serif;
+  color:var(--ink); background:var(--paper);
+  background-image:
+    linear-gradient(var(--line) 1px,transparent 1px),
+    linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:24px 24px;
+  background-blend-mode:multiply;
+  line-height:1.7; font-size:15px;
+}
+.wrap{max-width:980px;margin:0 auto;padding:0 18px 64px;}
+header.site{
+  border-bottom:2px solid var(--ink); margin-bottom:26px;
+  padding:22px 0 14px; background:var(--paper);
+}
+.eyebrow{
+  font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--ink-soft); margin:0 0 6px;
+}
+h1{
+  font-family:"Archivo",sans-serif; font-weight:700; font-size:27px;
+  margin:0 0 4px; letter-spacing:-.01em;
+}
+.subtitle{font-size:13.5px;color:var(--ink-soft);margin:0;}
+.std-tags{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;}
+.std-tags span{
+  font-family:"IBM Plex Mono",monospace; font-size:11px;
+  border:1px solid var(--line-strong); padding:2px 8px; color:var(--ink-soft);
+  background:var(--paper-2);
+}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media(max-width:760px){.grid{grid-template-columns:1fr;}}
+.card{
+  background:var(--paper); border:1.5px solid var(--ink);
+  position:relative;
+}
+.card::before{
+  content:attr(data-label);
+  position:absolute; top:-1px; left:14px; transform:translateY(-50%);
+  background:var(--paper); padding:0 8px;
+  font-family:"IBM Plex Mono",monospace; font-size:10.5px;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--ink-soft);
+}
+.card-body{padding:22px 18px 18px;}
+label{
+  display:block; font-size:12px; font-weight:600; color:var(--ink-soft);
+  margin:14px 0 6px; letter-spacing:.02em;
+}
+label:first-child{margin-top:0;}
+.series{display:flex;flex-wrap:wrap;gap:6px;}
+.series button{
+  font-family:"IBM Plex Mono",monospace; font-size:13px;
+  border:1px solid var(--line-strong); background:var(--paper-2);
+  color:var(--ink); padding:6px 9px; cursor:pointer; min-width:46px;
+  transition:all .12s;
+}
+.series button:hover{border-color:var(--accent);}
+.series button.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.num-row{display:flex;gap:10px;align-items:flex-end;}
+.num-row > div{flex:1;}
+input[type=number]{
+  width:100%; font-family:"IBM Plex Mono",monospace; font-size:16px;
+  padding:9px 10px; border:1.5px solid var(--line-strong);
+  background:#fff; color:var(--ink);
+}
+input[type=number]:focus{outline:none;border-color:var(--accent);}
+.unit{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--ink-soft);padding-bottom:10px;}
+.hint{font-size:11.5px;color:var(--ink-soft);margin-top:5px;}
+
+.result-block{border-top:1px solid var(--line);padding:13px 0;}
+.result-block:first-of-type{border-top:none;}
+.rb-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;}
+.rb-label{font-size:12px;font-weight:600;color:var(--ink-soft);letter-spacing:.02em;}
+.badge{
+  font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.12em;
+  text-transform:uppercase; padding:2px 7px; border:1px solid;
+}
+.badge.std{color:var(--teal);border-color:var(--teal);}
+.badge.est{color:var(--amber);border-color:var(--amber);}
+.rb-val{
+  font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:23px;
+  margin-top:4px; color:var(--ink);
+}
+.rb-val small{font-size:13px;font-weight:400;color:var(--ink-soft);}
+.rb-sub{font-size:12.5px;color:var(--ink-soft);margin-top:2px;}
+.tri{font-family:"IBM Plex Mono",monospace;letter-spacing:.08em;color:var(--accent);}
+.proc-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+.proc-list span{
+  font-size:12px; border:1px solid var(--line-strong);
+  background:var(--paper-2); padding:3px 9px;
+}
+.proc-list span.none{border-style:dashed;color:var(--ink-soft);}
+
+.prose{margin-top:40px;}
+.prose h2{
+  font-family:"Archivo",sans-serif; font-weight:600; font-size:19px;
+  margin:34px 0 10px; padding-bottom:6px; border-bottom:1px solid var(--line-strong);
+  letter-spacing:-.01em;
+}
+.prose h3{font-family:"Archivo",sans-serif;font-weight:600;font-size:15px;margin:20px 0 6px;}
+.prose p{margin:8px 0;}
+.prose ul{margin:8px 0;padding-left:20px;}
+.prose li{margin:4px 0;}
+.note{
+  border-left:3px solid var(--amber); background:var(--paper-2);
+  padding:11px 14px; margin:14px 0; font-size:13.5px;
+}
+.note strong{color:var(--amber);}
+table.ref{border-collapse:collapse;width:100%;margin:12px 0;font-size:13px;}
+table.ref th,table.ref td{
+  border:1px solid var(--line-strong); padding:6px 9px; text-align:left;
+  font-family:"IBM Plex Mono",monospace;
+}
+table.ref th{background:var(--paper-2);font-weight:600;}
+.faq dt{font-weight:600;margin-top:14px;}
+.faq dd{margin:4px 0 0;color:var(--ink-soft);}
+
+.reltools{margin-top:40px;border-top:2px solid var(--ink);padding-top:22px;}
+.reltools h2{font-family:"Archivo",sans-serif;font-weight:700;font-size:16px;margin:0 0 14px;letter-spacing:-.01em;}
+.reltools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+@media(max-width:760px){.reltools-grid{grid-template-columns:1fr;}}
+.reltools-grid a{
+  display:block; border:1.5px solid var(--line-strong); background:var(--paper-2);
+  padding:13px 15px; text-decoration:none; color:var(--ink);
+  box-shadow:3px 3px 0 rgba(27,26,22,.10);
+  transition:transform .14s ease,box-shadow .14s ease,border-color .14s ease;
+}
+.reltools-grid a:hover{border-color:var(--accent);transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--accent);}
+.reltools-name{display:block;font-family:"Archivo",sans-serif;font-weight:700;font-size:14px;}
+.reltools-desc{display:block;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);margin-top:3px;letter-spacing:.02em;}
+
+footer.site{
+  margin-top:40px; padding-top:18px; border-top:1px solid var(--line-strong);
+  font-size:11.5px; color:var(--ink-soft);
+}
+footer.site a{color:var(--accent);}
+.disclaimer{font-size:11px;line-height:1.6;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="site">
+  <p class="eyebrow">Mechanical Design Tools / Surface</p>
+  <h1>表面粗さ 換算・早見ツール</h1>
+  <p class="subtitle">Ra から標準カットオフ λc・Rz の目安・旧仕上げ記号 ▽・対応する加工法を一括表示</p>
+  <div class="std-tags">
+    <span>JIS B 0601</span><span>JIS B 0633</span><span>ISO 4287</span><span>ISO 4288</span>
+  </div>
+</header>
+
+<div class="grid">
+  <!-- 入力 -->
+  <section class="card" data-label="Input / 入力">
+    <div class="card-body">
+      <label>Ra（算術平均粗さ）標準数列から選ぶ</label>
+      <div class="series" id="series"></div>
+
+      <label for="ra">Ra を直接入力</label>
+      <div class="num-row">
+        <div>
+          <input type="number" id="ra" value="1.6" step="0.01" min="0.001" max="100">
+        </div>
+        <div class="unit">µm</div>
+      </div>
+      <p class="hint">標準数列：0.012 〜 100 µm。中間値もそのまま判定します。</p>
+
+      <label for="factor">Rz 換算係数（目安・手調整可）</label>
+      <div class="num-row">
+        <div>
+          <input type="number" id="factor" value="4" step="0.1" min="1" max="10">
+        </div>
+        <div class="unit">× Ra</div>
+      </div>
+      <p class="hint">Rz ≒ 係数 × Ra。規格化された換算式はなく、加工法で 3〜7 倍程度ばらつきます。</p>
+    </div>
+  </section>
+
+  <!-- 結果 -->
+  <section class="card" data-label="Result / 結果">
+    <div class="card-body" id="result">
+      <!-- JSで描画 -->
+    </div>
+  </section>
+</div>
+
+<!-- SEO prose -->
+<div class="prose">
+
+  <h2>表面粗さとは</h2>
+  <p>表面粗さは、加工した面の微細な凹凸の大きさを数値で表したものです。図面では面の機能（しゅう動・シール・はめあい・外観など）に応じて上限値を指示し、加工側はそれを満たす加工法を選びます。日本では <strong>JIS B 0601</strong>（製品の幾何特性仕様＝GPS、表面性状）で定義され、国際規格 ISO 4287 / 21920 に対応しています。</p>
+
+  <h2>Ra と Rz の違い</h2>
+  <p><strong>Ra（算術平均粗さ）</strong>は、基準長さ内で粗さ曲線の平均線からの高さの絶対値を平均した値です。面全体の平均的なザラつきを表し、最も広く使われます。一方 <strong>Rz（最大高さ粗さ）</strong>は、基準長さ内で最も高い山と最も深い谷の合計で、局所的な突起や深い傷を捉えるのに向きます。</p>
+
+  <div class="note">
+    <strong>注意：新旧 JIS で Rz の定義が違う。</strong>
+    現行 JIS B 0601（2001 年版以降）の <em>Rz</em> は「最大高さ粗さ」（旧規格の Ry に相当）です。
+    これに対し、1994 年版 JIS の <em>Rz</em> は「十点平均粗さ」（現在の <em>Rzjis</em>）で、意味が異なります。
+    古い図面の「Rz」を読むときは、引用している規格年を必ず確認してください。比較や換算の前提が変わります。
+  </div>
+
+  <h2>カットオフ λc と評価長さ</h2>
+  <p>粗さ測定では、うねり成分を除くために <strong>カットオフ値 λc</strong> を設定します。λc は測りたい Ra の値域に応じて <strong>JIS B 0633 / ISO 4288</strong> で標準値が決まっており、評価長さは原則 λc の 5 倍です。本ツールは入力した Ra から標準 λc を自動表示します（この値は規格表に基づく確定値です）。</p>
+  <table class="ref">
+    <thead><tr><th>Ra の範囲 (µm)</th><th>λc (mm)</th><th>評価長さ ln (mm)</th></tr></thead>
+    <tbody>
+      <tr><td>0.006 &lt; Ra ≤ 0.02</td><td>0.08</td><td>0.4</td></tr>
+      <tr><td>0.02 &lt; Ra ≤ 0.1</td><td>0.25</td><td>1.25</td></tr>
+      <tr><td>0.1 &lt; Ra ≤ 2</td><td>0.8</td><td>4</td></tr>
+      <tr><td>2 &lt; Ra ≤ 10</td><td>2.5</td><td>12.5</td></tr>
+      <tr><td>10 &lt; Ra ≤ 80</td><td>8</td><td>40</td></tr>
+    </tbody>
+  </table>
+
+  <h2>粗さの選び方</h2>
+  <p>面の機能から必要な粗さを決め、過剰に滑らかにしないのがコツです。滑らかすぎる指示は加工コストを跳ね上げます。</p>
+  <ul>
+    <li><strong>はめあい・しゅう動面</strong>：研削レベル（Ra 0.4〜1.6）が目安。精密なすべり軸受はさらに細かく。</li>
+    <li><strong>シール面（O リング・ガスケット）</strong>：漏れ防止のため Ra 0.8〜3.2 程度が一般的（シール種で指定確認）。</li>
+    <li><strong>一般的な機械加工面</strong>：Ra 3.2〜6.3 で十分なことが多い。</li>
+    <li><strong>非接触・外観のみ</strong>：Ra 12.5〜25 など粗めでコストを抑える。</li>
+  </ul>
+  <p>はめあい公差とセットで考えると判断しやすいです（関連ツール参照）。</p>
+
+  <h2>使い方</h2>
+  <ul>
+    <li>標準数列ボタンか直接入力で <strong>Ra</strong> を指定します。</li>
+    <li>右側に <strong>標準 λc・評価長さ</strong>（規格値）、<strong>Rz の目安</strong>、<strong>旧 ▽ 記号の目安</strong>、<strong>その Ra を狙える加工法</strong>が表示されます。</li>
+    <li>Rz 換算の係数は手で調整できます（既定 4）。</li>
+  </ul>
+
+  <h2 id="faq">よくある質問</h2>
+  <dl class="faq">
+    <dt>Ra と Rz はどう違う？</dt>
+    <dd>Ra は面の平均的なザラつき、Rz は最も高い山と深い谷の合計で局所的な突起を捉えます。目的で使い分けます。</dd>
+    <dt>Ra から Rz は計算できる？</dt>
+    <dd>厳密な換算式は規格にありません。Rz ≒ 4×Ra が目安ですが 3〜7 倍の幅があり、確定値が要るなら実測です。</dd>
+    <dt>カットオフ λc はどう決める？</dt>
+    <dd>JIS B 0633 で Ra の値域ごとに標準値が決まっています（例：Ra 0.1〜2µm → λc 0.8mm）。本ツールが自動表示します。</dd>
+    <dt>旧図面の Rz は今と同じ意味？</dt>
+    <dd>違うことがあります。1994 年版の Rz は十点平均粗さ（現 Rzjis）です。規格年を確認してください。</dd>
+    <dt>▽記号と Ra の対応は？</dt>
+    <dd>旧仕上げ記号の目安で、▽▽▽ で Ra 0.8〜1.6 程度。現行図面では Ra 値で指示します。</dd>
+  </dl>
+
+  <h2>対応範囲</h2>
+  <p>Ra 標準数列 0.012〜100 µm。標準カットオフ λc は JIS B 0633 の区分（Ra 0.006〜80 µm）で表示します。Rz の換算値、旧 ▽ 記号、加工法の対応は<strong>目安</strong>であり、規格で一意に定まる値ではありません。</p>
+
+</div>
+
+<!-- 関連ツール -->
+<nav class="reltools">
+  <h2>関連ツール</h2>
+  <div class="reltools-grid">
+    <a href="../fit/"><span class="reltools-name">はめあい公差</span><span class="reltools-desc">JIS B 0401 / ISO 286</span></a>
+    <a href="../bolt/"><span class="reltools-name">ボルト締結</span><span class="reltools-desc">ISO 898・トルク/軸力</span></a>
+    <a href="../tap-drill/"><span class="reltools-name">ねじ下穴径</span><span class="reltools-desc">JIS B 0205 / B 1004</span></a>
+  </div>
+</nav>
+
+<footer class="site">
+  <p class="disclaimer">
+    本ツールの数値のうち、標準カットオフ λc・評価長さは JIS B 0633 / ISO 4288 の規格区分に基づきます。
+    Rz の換算値・旧 ▽ 記号・加工法の対応は一般的な目安であり、加工法や測定条件で変動します。
+    実際の設計・検査では最新の JIS 規格票および実測値を確認してください。本ツールの利用により生じた損害について作成者は責任を負いません。
+  </p>
+  <p>&copy; 2026 ohyo04 ｜ <a href="../">機械設計 計算ツール集</a></p>
+</footer>
+
+</div>
+
+<script>
+// ===== データ（Nodeで標準値照合済み）=====
+const RA_SERIES = [0.012, 0.025, 0.05, 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.3, 12.5, 25, 50, 100];
+
+// 標準カットオフ λc (JIS B 0633 / ISO 4288, Ra基準)
+const CUTOFF = [
+  { lo: 0.006, hi: 0.02, lc: 0.08, ln: 0.4 },
+  { lo: 0.02,  hi: 0.1,  lc: 0.25, ln: 1.25 },
+  { lo: 0.1,   hi: 2,    lc: 0.8,  ln: 4 },
+  { lo: 2,     hi: 10,   lc: 2.5,  ln: 12.5 },
+  { lo: 10,    hi: 80,   lc: 8,    ln: 40 },
+];
+
+// 旧JIS 仕上げ記号 ▽ → Ra 目安
+const MARK = [
+  { sym: "▽▽▽▽", name: "精密仕上げ", lo: 0.1,  hi: 0.4 },
+  { sym: "▽▽▽",  name: "上仕上げ",   lo: 0.8,  hi: 1.6 },
+  { sym: "▽▽",   name: "中仕上げ",   lo: 3.2,  hi: 6.3 },
+  { sym: "▽",    name: "荒仕上げ",   lo: 12.5, hi: 25 },
+];
+
+// 加工法別 達成可能 Ra 範囲 (µm) 目安
+const PROCESS = [
+  { name: "砂型鋳造",      lo: 12.5,  hi: 50 },
+  { name: "鍛造",          lo: 3.2,   hi: 25 },
+  { name: "旋削",          lo: 0.8,   hi: 25 },
+  { name: "フライス削り",  lo: 0.8,   hi: 12.5 },
+  { name: "ドリル",        lo: 3.2,   hi: 12.5 },
+  { name: "リーマ仕上げ",  lo: 0.8,   hi: 3.2 },
+  { name: "研削",          lo: 0.1,   hi: 1.6 },
+  { name: "ホーニング",    lo: 0.05,  hi: 0.8 },
+  { name: "ラッピング",    lo: 0.012, hi: 0.4 },
+  { name: "超仕上げ/鏡面", lo: 0.012, hi: 0.1 },
+];
+
+function lookupCutoff(ra){
+  for(const r of CUTOFF){ if(ra > r.lo && ra <= r.hi) return r; }
+  return null;
+}
+function lookupMark(ra){
+  for(const m of MARK){ if(ra >= m.lo && ra <= m.hi) return m; }
+  if(ra < 0.1) return { sym:"▽▽▽▽ 超", name:"鏡面領域" };
+  if(ra > 25)  return { sym:"〜（削り無し相当）", name:"粗面" };
+  let best = MARK[0], bd = Infinity;
+  for(const m of MARK){ const c=(m.lo+m.hi)/2; if(Math.abs(ra-c)<bd){bd=Math.abs(ra-c);best=m;} }
+  return best;
+}
+function lookupProcess(ra){
+  return PROCESS.filter(p => ra >= p.lo && ra <= p.hi).map(p => p.name);
+}
+
+// ===== UI =====
+const raInput = document.getElementById('ra');
+const factorInput = document.getElementById('factor');
+const seriesEl = document.getElementById('series');
+const resultEl = document.getElementById('result');
+
+RA_SERIES.forEach(v => {
+  const b = document.createElement('button');
+  b.textContent = v;
+  b.dataset.v = v;
+  b.addEventListener('click', () => { raInput.value = v; render(); });
+  seriesEl.appendChild(b);
+});
+
+function fmt(n){
+  if(n >= 100) return n.toFixed(0);
+  if(n >= 10)  return n.toFixed(1);
+  return n.toFixed(2);
+}
+
+function render(){
+  const ra = parseFloat(raInput.value);
+  const factor = parseFloat(factorInput.value) || 4;
+
+  // 標準数列ボタンのハイライト
+  [...seriesEl.children].forEach(b => {
+    b.classList.toggle('active', parseFloat(b.dataset.v) === ra);
+  });
+
+  if(isNaN(ra) || ra <= 0){
+    resultEl.innerHTML = '<p class="rb-sub">Ra に正の値を入力してください。</p>';
+    return;
+  }
+
+  const cut = lookupCutoff(ra);
+  const rz = ra * factor;
+  const mark = lookupMark(ra);
+  const procs = lookupProcess(ra);
+  const outOfStd = ra <= 0.006 || ra > 80;
+
+  let html = '';
+
+  // λc（確定値）
+  html += '<div class="result-block">';
+  html += '<div class="rb-head"><span class="rb-label">標準カットオフ λc / 評価長さ</span><span class="badge std">JIS B 0633</span></div>';
+  if(cut){
+    html += `<div class="rb-val">${cut.lc} <small>mm</small></div>`;
+    html += `<div class="rb-sub">評価長さ ln = ${cut.ln} mm（λc × 5）</div>`;
+  }else{
+    html += `<div class="rb-val">—</div><div class="rb-sub">Ra ${ra}µm は B0633 の標準区分（0.006〜80µm）外です。</div>`;
+  }
+  html += '</div>';
+
+  // Rz目安
+  html += '<div class="result-block">';
+  html += '<div class="rb-head"><span class="rb-label">Rz の目安（最大高さ）</span><span class="badge est">目安</span></div>';
+  html += `<div class="rb-val">${fmt(rz)} <small>µm</small></div>`;
+  html += `<div class="rb-sub">Rz ≒ ${factor} × Ra。規格換算式はなく 3〜7 倍の幅があります。</div>`;
+  html += '</div>';
+
+  // ▽記号
+  html += '<div class="result-block">';
+  html += '<div class="rb-head"><span class="rb-label">旧仕上げ記号の目安</span><span class="badge est">目安</span></div>';
+  html += `<div class="rb-val tri">${mark.sym}</div>`;
+  html += `<div class="rb-sub">${mark.name}（旧 JIS。現行図面は Ra 値で指示）</div>`;
+  html += '</div>';
+
+  // 加工法
+  html += '<div class="result-block">';
+  html += '<div class="rb-head"><span class="rb-label">この Ra を狙える代表的な加工法</span><span class="badge est">目安</span></div>';
+  html += '<div class="proc-list">';
+  if(procs.length){
+    procs.forEach(p => { html += `<span>${p}</span>`; });
+  }else{
+    html += '<span class="none">該当する一般加工法なし</span>';
+  }
+  html += '</div>';
+  html += '</div>';
+
+  resultEl.innerHTML = html;
+}
+
+raInput.addEventListener('input', render);
+factorInput.addEventListener('input', render);
+render();
+</script>
+</body>
+</html>
